@@ -27,7 +27,7 @@ import static android.opengl.GLES20.glUseProgram;
 import static android.opengl.GLES20.glVertexAttribPointer;
 import static android.opengl.GLES20.glViewport;
 
-public class SierpinkiRenderer implements GLSurfaceView.Renderer {
+public class SierpinskiRenderer implements GLSurfaceView.Renderer {
 
     private static final int BYTES_PER_FLOAT = 4;
     private static final String A_POSITION = "a_Position";
@@ -40,7 +40,7 @@ public class SierpinkiRenderer implements GLSurfaceView.Renderer {
     private int aPositionLocation;
     private int uColorLocation;
 
-    public SierpinkiRenderer(Activity activity) {
+    public SierpinskiRenderer(Activity activity) {
         mContext = activity;
         float[] vertices = new float[POINTS_COUNT * 2];
         // triangle

@@ -24,7 +24,7 @@ public class SierpinskiActivity extends Activity {
             return;
         }
         mGlSurfaceView.setEGLContextClientVersion(2);
-        mGlSurfaceView.setRenderer(new SierpinkiRenderer(this));
+        mGlSurfaceView.setRenderer(new SierpinskiRenderer(this));
         mRendererSet = true;
         setContentView(mGlSurfaceView);
     }
