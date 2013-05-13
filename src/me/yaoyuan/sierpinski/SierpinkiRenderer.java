@@ -9,7 +9,6 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
-import android.util.Log;
 
 import me.yaoyuan.sierpinski.util.ShaderHelper;
 import me.yaoyuan.sierpinski.util.TextResourceReader;
@@ -35,6 +34,7 @@ public class SierpinkiRenderer implements GLSurfaceView.Renderer {
     private static final String U_COLOR = "u_Color";
     private static final int POSITION_COMPONENT_COUNT = 2;
     private final Activity mContext;
+    private final int POINTS_COUNT = 10000;
     private FloatBuffer mVertexData;
     private int mProgram;
     private int aPositionLocation;
@@ -42,26 +42,23 @@ public class SierpinkiRenderer implements GLSurfaceView.Renderer {
 
     public SierpinkiRenderer(Activity activity) {
         mContext = activity;
-//        float[] vertices = new float[]{
-//                -0.5f, -0.5f,
-//                0.5f, -0.5f,
-//                0.0f, 0.5f
-//        };
-        float[] vertices = new float[10000];
-        vertices[0] = -0.5f;
-        vertices[1] = -0.5f;
-        vertices[2] = 0.5f;
-        vertices[3] = -0.5f;
+        float[] vertices = new float[POINTS_COUNT * 2];
+        // triangle
+        vertices[0] = -0.75f;
+        vertices[1] = -0.75f;
+        vertices[2] = 0.75f;
+        vertices[3] = -0.75f;
         vertices[4] = 0.0f;
-        vertices[5] = 0.5f;
+        vertices[5] = 0.75f;
+        // initial point
         vertices[6] = -0.25f;
         vertices[7] = -0.25f;
+
         Random ran = new Random();
-        for (int index = 8; index < 10000; index = index + 2) {
+        for (int index = 8; index < POINTS_COUNT * 2; index = index + 2) {
             int vertexIndex = ran.nextInt(3);
             vertices[index] = (vertices[vertexIndex * 2] + vertices[index - 2]) / 2;
             vertices[index + 1] = (vertices[vertexIndex * 2 + 1] + vertices[index - 1]) / 2;
-            Log.d("DDDD", vertices[index] + " " + vertices[index + 1]);
         }
 
         mVertexData = ByteBuffer.allocateDirect(vertices.length * BYTES_PER_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
@@ -94,10 +91,7 @@ public class SierpinkiRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         glClear(GL_COLOR_BUFFER_BIT);
-//        glUniform4f(uColorLocation, 1.0f, 0.0f, 0.0f, 1.0f);
-//        glDrawArrays(GL_POINTS, 0, 3);
-        // Draw the first mallet blue.
-        glUniform4f(uColorLocation, 0.0f, 0.0f, 1.0f, 1.0f);
-        glDrawArrays(GL_POINTS, 0, 5000);
+        glUniform4f(uColorLocation, 1.0f, 0.0f, 0.0f, 1.0f);
+        glDrawArrays(GL_POINTS, 0, POINTS_COUNT);
     }
 }
