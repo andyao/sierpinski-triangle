@@ -5,9 +5,11 @@ import javax.microedition.khronos.opengles.GL10;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Random;
 
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
 
 import me.yaoyuan.sierpinski.util.ShaderHelper;
 import me.yaoyuan.sierpinski.util.TextResourceReader;
@@ -40,11 +42,28 @@ public class SierpinkiRenderer implements GLSurfaceView.Renderer {
 
     public SierpinkiRenderer(Activity activity) {
         mContext = activity;
-        float[] vertices = new float[]{
-                -0.5f, -0.5f,
-                0.5f, -0.5f,
-                0.0f, 0.5f
-        };
+//        float[] vertices = new float[]{
+//                -0.5f, -0.5f,
+//                0.5f, -0.5f,
+//                0.0f, 0.5f
+//        };
+        float[] vertices = new float[10000];
+        vertices[0] = -0.5f;
+        vertices[1] = -0.5f;
+        vertices[2] = 0.5f;
+        vertices[3] = -0.5f;
+        vertices[4] = 0.0f;
+        vertices[5] = 0.5f;
+        vertices[6] = -0.25f;
+        vertices[7] = -0.25f;
+        Random ran = new Random();
+        for (int index = 8; index < 10000; index = index + 2) {
+            int vertexIndex = ran.nextInt(3);
+            vertices[index] = (vertices[vertexIndex * 2] + vertices[index - 2]) / 2;
+            vertices[index + 1] = (vertices[vertexIndex * 2 + 1] + vertices[index - 1]) / 2;
+            Log.d("DDDD", vertices[index] + " " + vertices[index + 1]);
+        }
+
         mVertexData = ByteBuffer.allocateDirect(vertices.length * BYTES_PER_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
         mVertexData.put(vertices);
     }
@@ -79,10 +98,6 @@ public class SierpinkiRenderer implements GLSurfaceView.Renderer {
 //        glDrawArrays(GL_POINTS, 0, 3);
         // Draw the first mallet blue.
         glUniform4f(uColorLocation, 0.0f, 0.0f, 1.0f, 1.0f);
-        glDrawArrays(GL_POINTS, 0, 1);
-
-        // Draw the second mallet red.
-        glUniform4f(uColorLocation, 1.0f, 0.0f, 0.0f, 1.0f);
-        glDrawArrays(GL_POINTS, 1, 2);
+        glDrawArrays(GL_POINTS, 0, 5000);
     }
 }
